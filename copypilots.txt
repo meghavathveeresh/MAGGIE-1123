@@ -1,0 +1,193 @@
+---
+- hosts: Webservers
+  become: yes
+  tasks:
+  -  name: install Apache2 in ubuntu machines
+     apt:
+       name: apache2
+       state: present
+  -  name: apache2 started in ubuntu machines
+     service:
+       name: apache2
+       enabled: yes
+       state: started
+  -  name: apache2 enabled in ubuntu machines
+     service:
+       name: apache2
+       enabled: yes
+       state: reloaded
+  -  name: install php php-fpm in ubuntu machines
+     apt:
+       name: php-fpm
+       state: present
+  -  name: install php-mysql in ubuntu machines
+     apt:
+       name: php-mysql
+       state: present
+  -  name: install php-opcache in ubuntu machines
+     apt:
+       name: php-opcache
+       state: present          
+  -  name: install php-cli in ubuntu machines
+     apt:
+       name: php-cli
+       state: present
+  -  name: install libapache2-mod-php in ubuntu machines
+     apt:
+       name: libapache2-mod-php
+       state: present
+  
+
+
+
+       thise a lamp project installaion and started proecess apachee,mysqal,php all installation if title also we change 
+       ex Appservers aslo node1 and node2 open it
+
+
+
+
+---
+- hosts: Webservers
+  become: yes
+  tasks:
+  -  name: install Apache2 in ubuntu machines
+     apt:
+       name: apache2
+       state: present
+  -  name: apache2 started in ubuntu machines
+     service:
+       name: apache2
+       enabled: yes
+       state: started
+  -  name: apache2 enabled in ubuntu machines
+     service:
+       name: apache2
+       enabled: yes
+       state: enabled
+  -  name: install php php-fpm in ubuntu machines
+     apt:
+       name: php php-fpm
+       state: present
+  -  name: install php-mysql in ubuntu machines
+     apt:
+       name: php-mysql
+       state: present
+  -  name: install php-opcache in ubuntu machines
+     apt:
+       name: php-opcache
+       state: present          
+  -  name: install php-cli in ubuntu machines
+     apt:
+       name: php-cli
+       state: present
+  -  name: install libapache2-mod-php in ubuntu machines
+     apt:
+       name: libapache2-mod-php
+       state: present 
+  -  name: Copy info.php file to Destination folder
+     copy:
+       src: info.php
+       dest: /var/www/html/info.php
+
+when we add destination file just add this playbook to destination file
+
+
+18/06/2025 ansible loops format
+
+---
+- hosts: Webservers
+  become: yes
+  tasks:
+  -  name: install Apache2 in ubuntu machines
+     apt:
+       name: apache2
+       state: present
+  -  name: apache2 started in ubuntu machines
+     service:
+       name: apache2
+       enabled: yes
+       state: started
+  -  name: apache2 enabled in ubuntu machines
+     service:
+       name: apache2
+       enabled: yes
+       state: reloaded
+  -  name: install all php packages in ubuntu machines
+     apt:
+       name: "{{ item }}"
+       state: absent                                     absent unnistall or present it will be open apache2 install and web also
+     loop:
+       - php-fpm
+       - php-mysql
+       - php-opcache
+       - php-cli
+       - libapache2-mod-php
+  -  name: apache2 restarted in ubuntu machines
+     service:
+       name: apache2
+       enabled: yes
+       state: restarted
+  -  name: Copy info.php file to Destination folder
+     copy:
+       src: info.php
+       dest: /var/www/html/info.php
+
+
+apache2 install format
+
+---
+- hosts: Webservers
+  become: yes
+  tasks:
+ 
+  -  name: install all php packages in ubuntu machines
+     apt:
+       name: "{{ item }}"
+       state: present       present install or absent unistall 
+     loop:
+       - php-fpm
+       - php-mysql
+       - php-opcache
+       - php-cli
+       - libapache2-mod-php
+       - apache2
+  -  name: apache2 started in ubuntu machines
+     service:
+       name: apache2
+       enabled: yes
+       state: started
+  -  name: apache2 enabled in ubuntu machines
+     service:
+       name: apache2
+       enabled: yes
+       state: reloaded    
+  -  name: apache2 restarted in ubuntu machines
+     service:
+       name: apache2
+       enabled: yes
+       state: restarted
+  -  name: Copy info.php file to Destination folder
+     copy:
+       src: info.php
+       dest: /var/www/html/info.php
+
+
+       19/06/2025 whenmodule format
+
+
+
+---
+- hosts: Webservers
+  become: yes
+  tasks:
+  -  name: installed apache
+     apt:
+       name: apache2
+       state: present
+       update_cache: yes
+     when: ansible_os_family=="Debian"
+  -  name: installed httpd
+     yum:
+       name: httpd
+       state: present
+     when: ansible_os_family=="Redhat"

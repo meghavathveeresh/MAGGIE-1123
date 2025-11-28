@@ -1,0 +1,25 @@
+19/6/25/
+---
+- hosts: Websevers
+  become: yes
+  vars:
+    package_name: apache2
+    package_httpd: httpd
+    git_variable: git
+  tasks:
+  -  name: installed apache
+     apt:
+       name: "{{ package_name }}"
+       state: present
+       update_cache: yes
+     when: ansible_os_family=="Debian"
+  -  name: installed git
+     apt:
+       name: "{{ git_variable }}"
+       state: present
+     when: ansible_os_family=="Debian"
+  -  name: installed httpd
+     yum:
+       name: "{{ package_httpd }}"
+       state: present
+     when: ansible_os_family=="Redhat"
